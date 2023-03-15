@@ -3,49 +3,61 @@
     <div class="text-3xl mb-5 font-semibold border-b border-inherit p-2">
       <p>Customize your password</p>
     </div>
-    <div class="flex">
-      <div class="flex-auto">
-        Password Length
-        <div class="my-2">
+    <div class="flex flex-col sm:flex-row p-2 gap-4">
+      <div class="sm:w-1/2">
+        <p>Password Length</p>
+        <div class="flex my-2 items-center">
           <input
             type="number"
             class="border border-inherit p-3 rounded-md shadow-lg bg-white w-20"
-          /><span class="ml-4">
+            v-model="passwordStore.passwordLength"
+            @input="passwordStore.generatePassword()"
+          />
+          <input
+            type="range"
+            min="1"
+            max="50"
+            class="appearance-none rounded-full accent-red-500 bg-gray-300 outline-none focus:outline-none ml-4 h-2 w-full"
+            v-model="passwordStore.passwordLength"
+            @input="passwordStore.generatePassword()"
+          />
+        </div>
+      </div>
+      <div class="flex gap-4 sm:w-1/2 justify-between sm:justify-evenly">
+        <div class="flex flex-col gap-2">
+          <div
+            class="flex items-center"
+            v-for="(option, index) in passwordOptions"
+          >
             <input
-              type="range"
-              class="slider appearance-none h-2 rounded-full bg-gray-300 outline-none focus:outline-none"
+              :id="`radio_${index}`"
+              type="radio"
+              class="form-radio w-6 h-6 text-indigo-600 transition duration-150 ease-in-out accent-red-500"
+              v-model="selectedOption"
+              :value="option.value"
             />
-          </span>
+            <label :for="`radio_${index}`" class="ml-2 text-gray-700">{{
+              option.label
+            }}</label>
+          </div>
         </div>
-      </div>
-      <div class="flex-1">
-        <div
-          class="flex items-center"
-          v-for="(option, index) in passwordOptions"
-        >
-          <input
-            :id="`radio_${index}`"
-            type="radio"
-            class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-            v-model="selectedOption"
-            :value="option.value"
-          />
-          <label :for="`radio_${index}`" class="ml-2 text-gray-700">{{
-            option.label
-          }}</label>
-        </div>
-      </div>
-      <div class="flex-1">
-        <div class="flex" v-for="(attr, index) in passwordAttributes">
-          <input
-            type="checkbox"
-            :id="`checkbox_${index}`"
-            class="form-checkbox h-5 w-5 text-blue-600"
-            v-model="attr.checked"
-          />
-          <label :for="`checkbox_${index}`" class="ml-2 block text-gray-700 ">{{
-            attr.label
-          }}</label>
+        <div class="flex flex-col gap-2">
+          <div
+            class="flex items-center"
+            v-for="(attr, index) in passwordAttributes"
+          >
+            <input
+              type="checkbox"
+              :id="`checkbox_${index}`"
+              class="form-checkbox w-6 h-6 text-blue-600 accent-red-500"
+              v-model="attr.checked"
+            />
+            <label
+              :for="`checkbox_${index}`"
+              class="ml-2 block text-gray-700"
+              >{{ attr.label }}</label
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +72,12 @@
 </template>
 
 <script>
+import { usePasswordStore } from "../store/password";
 export default {
+  setup() {
+    const passwordStore = usePasswordStore();
+    return { passwordStore };
+  },
   data() {
     return {
       selectedOption: "all_characters",
