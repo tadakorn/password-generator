@@ -1,11 +1,8 @@
 <template>
   <div class="md:text-5xl text-2xl text-center mb-5 font-semibold pt-10">
-    <p>This is Test</p>
-    <p>I am iron man</p>
     <p>Instantly generate a secure,</p>
     <p>random password with the</p>
     <p>LastPass online tool</p>
-    <p>Love Droid</p>
   </div>
   <div class="text-center">
     <p>
