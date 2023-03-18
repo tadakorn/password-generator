@@ -5,6 +5,7 @@
     <p>Instantly generate a secure,</p>
     <p>random password with the</p>
     <p>LastPass online tool</p>
+    <p>Love Droid</p>
   </div>
   <div class="text-center">
     <p>
